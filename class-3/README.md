@@ -1,14 +1,11 @@
 #Week 4 - Class 3
 ##Homework
-* Embed your HomeViewController in a NavigationController.
-* Implement API call for User's profile information.
-* Create a new User model object based on the User JSON from Github.
-* Create ProfileViewController that will display User information.
-* Create custom viewController Transition from HomeViewController to ProfileViewController.
-* Implement dismissal of ProfileViewController using Delegation pattern.
-* Implement a '+' to be able to create new repository using a POST request.
-* **Bonus:**
-	* Download User's profile image from gitHub.
+* Layout your TableViewCells as Nibs and create your own subclass instead of using the Basic UITableViewCell.  
+	* Your Nib should have labels for 2 pieces of data from the Repository.  
+	* You will choose what relevant info to display from the JSON.  
+* Create ProfileViewController that will display User information.  
+* Create custom viewController Transition from HomeViewController to ProfileViewController.  
+* Implement your own custom animation on the AuthViewController that is presented on user's first launch.  
 
 ##Reading Assignment:
 * Apple Documentation:

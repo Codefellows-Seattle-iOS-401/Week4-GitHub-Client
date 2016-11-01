@@ -1,9 +1,10 @@
 #Week 4 - Class 2
 ##Homework
 * Your AppDelegate should check to see if token exists before making a call to Github. If token does not exist, present login screen.  
-* Implement the ability fetch repositories using a GET request. NOTE: Please make sure you include "repo" in your initial scope when requesting a token.  
+* Implement the ability fetch repositories using a GET request. 
+	* NOTE: Make sure you include "repo" in your initial scope when requesting a token.  
 * Create model object for Repository.  
-* Create a HomeViewController and parse through the JSON returned from the server into models.  
+* Create a HomeViewController and parse through the JSON returned from the server into model objects.  
 * Your HomeViewController should display all the repositories in a TableView.  
 * Implement a UISearchBar on your tableView, to search your repositories.  
 	
