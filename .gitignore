@@ -1,6 +1,10 @@
 
 # Created by https://www.gitignore.io/api/xcode,swift,objective-c,osx
 
+### PROJECT FILES ###
+GitHubCredentials.swift
+
+
 ### Xcode ###
 # Xcode
 #
