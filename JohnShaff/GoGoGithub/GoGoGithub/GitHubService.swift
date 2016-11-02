@@ -11,6 +11,7 @@ import UIKit
 let kBaseUrlString = "https://github.com/login/oauth/"
 
 typealias GitHubAuthCompletion = (Bool) -> ()
+typealias RepositoriesCompletion = ([Repository]?)->()
 
 
 
@@ -27,7 +28,71 @@ enum SaveOptions {
 
 class GitHubService {
     
+    //this right here is the actual singleton
     static let shared = GitHubService()
+    
+    private var session: URLSession
+    private var urlComponents: URLComponents
+    
+    var allRepos = [Repository]()
+
+    
+    private func configure() {
+        
+        // we're using urlComponents as a class that already exists with these helpful properties to store URL stuff
+        self.urlComponents.scheme = "https"
+        
+        //this is completing our url in chunks
+        self.urlComponents.host = "api.github.com"
+        
+        if let token = UserDefaults.standard.getAccessToken() {
+            let tokenQueryItem = URLQueryItem(name: "access_token", value: token)
+            urlComponents.queryItems = [tokenQueryItem]
+        }
+    }
+    
+    func fetchRepos(completion: @escaping RepositoriesCompletion) {
+        self.urlComponents.path = "/user/repos"
+        guard let url = self.urlComponents.url else {
+            completion(nil); return
+        }
+        
+        //That little dangling in is because of the completion syntax. We don't have to put anything after but it has to be there almost as the signature
+        
+        print(url.absoluteString)
+        
+        self.session.dataTask(with: url, completionHandler: { (data, response, error) in
+            if error != nil { completion(nil); return }
+            
+            if let data = data {
+                
+                var repos = [Repository]()
+                
+                do {
+                    print(response)
+                    
+                    //for json data we always want mutable contaons
+                    if let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [[String: Any]] {
+                        
+                        for repoJSON in json {
+                            if let repository = Repository(json: repoJSON) {
+                                repos.append(repository)
+                            }
+                        }
+                        
+                        //dataTasks are threadsafe so we have to add it back to the main queue
+                        OperationQueue.main.addOperation {
+                            completion(repos)
+                        }
+                        
+                    }
+                } catch {
+                    print(error)
+                }
+            }
+        }).resume()
+    }
+    
     
     func oAuthWith(parameters: [String: String]) {
         
@@ -77,56 +142,57 @@ class GitHubService {
             OperationQueue.main.addOperation {
                 completion(success)
             }
-            do {
-                let code = try codeFrom(url: url)
+        }
+        
+        do {
+            let code = try codeFrom(url: url)
+            
+            //We need to go back to GitHub to get our access token
+            let requestString = "\(kBaseUrlString)access_token?client_id=\(kGitHubClientID)&client_secret=\(kGitHubClientSecret)&code=\(code)"
+            
+            if let requestURL = URL(string: requestString) {
                 
-                //We need to go back to GitHub to get our access token
-                let requestString = "\(kBaseUrlString)access_token?client_id=\(kGitHubClientID)&client_secret=\(kGitHubClientSecret)&code=\(code)"
+                let session = URLSession(configuration: .ephemeral)
                 
-                if let requestURL = URL(string: requestString) {
+                //Data tasks have to be resumed for whatever reason
+                session.dataTask(with: requestURL, completionHandler: { (data, response, error) in
+                    if error != nil { returnToMainWith(success: false) }
                     
-                    let session = URLSession(configuration: .ephemeral)
+                    //if data doesn't exist, we've already gotten past the error, so we can return to main.
+                    guard let data = data else { returnToMainWith(success: true); return }
                     
-                    //Data tasks have to be resumed for whatever reason
-                    session.dataTask(with: requestURL, completionHandler: { (data, response, error) in
-                        if error != nil { returnToMainWith(success: false) }
+                    if let dataString = String(data: data, encoding: .utf8) {
                         
-                        //if data doesn't exist, we've already gotten past the error, so we can return to main.
-                        guard let data = data else { returnToMainWith(success: true); return }
-                        
-                        
-                        if let dataString = String(data: data, encoding: .utf8) {
+                        //if we can get a token out of this string
+                        if let token = self.accessTokenFrom(dataString) {
+                            print("Access Token: \(token)")
                             
-                            //if we can get a token out of this string
-                            if let token = self.accessTokenFrom(dataString) {
-                                print("Access Token: \(token)")
-                                
-                                //then we're saving it in userDeafaults
-                                let success = UserDefaults.standard.save(accessToken: token)
-                                
-                                print(UserDefaults.standard.getAccessToken()!)
-                                
-                                returnToMainWith(success: success)
-                            }
-                        } else {
+                            //then we're saving it in userDeafaults
+                            let success = UserDefaults.standard.save(accessToken: token)
                             
-                            returnToMainWith(success: false)
+                            print(UserDefaults.standard.getAccessToken()!)
+                            
+                            returnToMainWith(success: success)
                         }
-                    }).resume()
-                }
-                
-                
-                
-                
-            } catch {
-                returnToMainWith(success: false)
+                    } else {
+                        
+                        returnToMainWith(success: false)
+                    }
+                }).resume()
             }
+        } catch {
+            returnToMainWith(success: false)
         }
     }
     
     
     private init () {
         
+        // ephemeral means that its reusuable over and over but the session wont cache everytime.
+        self.session = URLSession(configuration: .ephemeral)
+        
+        self.urlComponents = URLComponents()
+        configure()
     }
     
 }
