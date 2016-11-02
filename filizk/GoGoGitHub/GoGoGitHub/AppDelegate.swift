@@ -12,15 +12,36 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+
+    var authController: AuthViewController?
+    var homeController: HomeViewController?
+
     let parameters = ["scope":"user:email,repo"]
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-
-        if GitHubService.shared.checkIfValidTokenExists() == nil {
-            GitHubService.shared.oAuthWith(parameters: parameters)
-        }
-
+        //UserDefaults.standard.resetToken()
+        checkAuthStatus()
         return true
+    }
+
+    func checkAuthStatus() {
+        if let token = UserDefaults.standard.getAccessToken() {
+            print (token)
+        } else {
+            if let homeViewController = self.window?.rootViewController as? HomeViewController,
+                let storyboard = homeViewController.storyboard {
+
+                if let authViewController = storyboard.instantiateViewController(withIdentifier: "authVC") as? AuthViewController {
+                    homeViewController.addChildViewController(authViewController)
+                    homeViewController.view.addSubview(authViewController.view)
+
+                    authViewController.didMove(toParentViewController: homeViewController)
+
+                    self.authController = authViewController
+                    self.homeController = homeViewController
+                }
+            }
+        }
     }
 
     //enter point when github redirects
@@ -40,8 +61,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         }
  */
+
         GitHubService.shared.tokenRequestFor(url: url, options: .userDefaults) { (success) in
-                
+            if let authController = self.authController, let homeController = self.homeController {
+                authController.dismissAuthController()
+                homeController.update()
+            }
         }
 
         return true

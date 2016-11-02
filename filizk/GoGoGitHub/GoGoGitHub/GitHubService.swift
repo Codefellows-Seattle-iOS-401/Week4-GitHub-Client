@@ -11,6 +11,7 @@ import UIKit
 let kBaseUrlString = "https://github.com/login/oauth"
 
 typealias GitHubAuthCompletion = (Bool) -> ()
+typealias RepositoriesCompletion = ([Repository]?) -> ()
 
 enum GitHubOAuthError: Error {
     case extractingCode(String)
@@ -25,7 +26,54 @@ class GitHubService {
 
     static let shared = GitHubService()
 
-    private init() {}
+    private var session: URLSession
+    private var urlComponents: URLComponents
+
+    private init() {
+        self.session = URLSession(configuration: .ephemeral)
+        self.urlComponents = URLComponents()
+        configure()
+    }
+
+    func fetchRepos(completion: @escaping RepositoriesCompletion) {
+        configure()
+        self.urlComponents.path = "/user/repos"
+
+        guard let url = self.urlComponents.url else { completion(nil); return }
+
+        self.session.dataTask(with: url) { (data, response, error) in
+            if error != nil { print(error?.localizedDescription); completion(nil); return }
+
+            if let data = data {
+                var repos = [Repository]()
+
+                do {
+                    if let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [[String: Any]] {
+                        for repoJSON in json {
+                            if let repository = Repository(json: repoJSON) {
+                                repos.append(repository)
+                            }
+                        }
+
+                        OperationQueue.main.addOperation {
+                            completion(repos)
+                        }
+                    }
+                } catch {
+                    print("error")
+                }
+            }
+        }.resume()
+    }
+
+    private func configure() {
+        self.urlComponents.scheme = "https"
+        self.urlComponents.host = "api.github.com"
+
+        if let token = UserDefaults.standard.getAccessToken() {
+            urlComponents.queryItems = [URLQueryItem(name:"access_token", value: token)]
+        }
+    }
 
     func oAuthWith(parameters: [String: String]) {
 
