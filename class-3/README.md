@@ -2,10 +2,11 @@
 ##Homework
 * Layout your TableViewCells as Nibs and create your own subclass instead of using the Basic UITableViewCell.  
 	* Your Nib should have labels for 2 pieces of data from the Repository.  
-	* You will choose what relevant info to display from the JSON.  
-* Create ProfileViewController that will display User information.  
-* Create custom viewController Transition from HomeViewController to ProfileViewController.  
-* Implement your own custom animation on the AuthViewController that is presented on user's first launch.  
+	* You will choose what relevant info to display in the cell from the JSON.  
+* Create RepositoryDetailViewController that will display Repository information.  
+	* Implement the dismissal of the RepositoryDetailViewController.  
+	* Your RepositoryDetailViewController should display at least 5 pieces of data from the Repository.  
+* Create custom viewController Transition from HomeViewController to RepositoryDetailViewController.  
 
 ##Reading Assignment:
 * Apple Documentation:
