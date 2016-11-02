@@ -14,6 +14,8 @@ class Repository {
     let name: String
     let description: String?
     let language: String?
+    let watchers: Int?
+    let fork: Bool
     
 //    let myRepos = Repository(json: GET blah blah blah)
     
@@ -26,6 +28,8 @@ class Repository {
             self.name = name
             self.description = json["description"] as? String
             self.language = json["language"] as? String
+            self.watchers = json["watchers_count"] as? Int
+            self.fork = json["fork"] as! Bool
         } else {
             return nil
         }

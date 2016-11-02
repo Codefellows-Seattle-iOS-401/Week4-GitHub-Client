@@ -22,8 +22,10 @@ class HomeViewController: UIViewController {
 
         update()
         let nib = UINib(nibName: "repoCell", bundle: nil)
-        self.repoTableView.register(nib, forCellReuseIdentifier: repo)
+        self.repoTableView.register(nib, forCellReuseIdentifier: RepoViewCell.identifier)
         
+        self.repoTableView.estimatedRowHeight = 50
+        self.repoTableView.rowHeight = UITableViewAutomaticDimension
     }
 
     override func didReceiveMemoryWarning() {
@@ -45,9 +47,13 @@ class HomeViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
         
+        let selectedIndex = repoTableView.indexPathForSelectedRow!.row
+        let selectedRepo = GitHubService.shared.allRepos[selectedIndex]
+        
         if segue.identifier == RepoDetailViewController.identifier {
             if let destinationController = segue.destination as? RepoDetailViewController {
                 destinationController.transitioningDelegate = self
+                destinationController.repo = selectedRepo
             }
         }
     }
@@ -69,14 +75,20 @@ extension HomeViewController: UISearchBarDelegate {
 extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        let repoName = GitHubService.shared.allRepos[indexPath.row].name
-        cell.textLabel?.text = repoName
+        let cell = tableView.dequeueReusableCell(withIdentifier: RepoViewCell.identifier, for: indexPath) as! RepoViewCell
+        let repoName = GitHubService.shared.allRepos[indexPath.row]
+        cell.repo = repoName
         return cell
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return GitHubService.shared.allRepos.count
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        //sender is whoever fired off the method... it can hand something over to the prepareForSegue which checks for it.
+        self.performSegue(withIdentifier: RepoDetailViewController.identifier, sender: nil)
     }
     
 }

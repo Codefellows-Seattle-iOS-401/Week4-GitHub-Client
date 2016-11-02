@@ -22,7 +22,7 @@ class CustomTransition: NSObject {
 extension CustomTransition: UIViewControllerAnimatedTransitioning {
     
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
-        return duration
+        return self.duration
     }
     
     
