@@ -8,6 +8,27 @@
 
 import UIKit
 
+extension String {
+    var isValid: Bool {
+        let regexPattern = "[^0-9a-z]"
+        
+        do {
+            let regex = try NSRegularExpression(pattern: regexPattern, options: .caseInsensitive)
+            
+            //the matches pattern requires an NSRange type
+            let range = NSRange(location: 0, length: self.characters.count)
+            
+            let matches = regex.numberOfMatches(in: self, options: .reportCompletion, range: range)
+            
+        } catch {
+            return false
+        }
+        return true
+    }
+    
+    
+}
+
 extension UIResponder {
     
     //This creates a property on all new classes that inherit from UIResponder, that is essentially just a constant that stores the name of the class itself. 

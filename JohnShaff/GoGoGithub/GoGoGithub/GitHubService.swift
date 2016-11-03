@@ -12,7 +12,8 @@ let kBaseUrlString = "https://github.com/login/oauth/"
 
 typealias GitHubAuthCompletion = (Bool) -> ()
 typealias RepositoriesCompletion = ([Repository]?)->()
-
+typealias UserSearchCompletion = ([User]?) -> ()
+typealias RepoSearchCompletion = ([Repository]?) -> ()
 
 
 enum GitHubOAuthError: Error {
@@ -47,10 +48,76 @@ class GitHubService {
         
         if let token = UserDefaults.standard.getAccessToken() {
             let tokenQueryItem = URLQueryItem(name: "access_token", value: token)
+            
+            //Building out the url query items array
             urlComponents.queryItems = [tokenQueryItem]
         }
     }
     
+    
+    //NETWORK CALL: pagination on an endpoint means its only returning a certain amount of the total data available
+    func searchUsersWith(searchTerm: String, completion: @escaping UserSearchCompletion) {
+        self.urlComponents.path = "/search/users"
+        
+        //Adding to the url query items array... doesn't matter what order. Server will parse and return all query items.
+        let searchQueryItem = URLQueryItem(name: "q", value: searchTerm)
+        
+        self.urlComponents.queryItems?.append(searchQueryItem)
+        
+        guard let url = self.urlComponents.url else { completion(nil); return }
+        
+        self.session.dataTask(with: url, completionHandler: {(data, response, error) in
+            if error != nil { completion(nil); return }
+            
+            guard let data = data else { completion(nil); return }
+            
+            //need to serialize the data... need do, because serialization requires a try
+            do {
+                if let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String: Any], let items = json["items"] as? [[String:Any]] {
+                    
+                    //need an array to store the incoming users
+                    var searchedUsers = [User]()
+                    
+                    
+                    for userJSON in items {
+                        if let user = User(json: userJSON) {
+                            searchedUsers.append(user)
+                        }
+                    }
+                    
+                    
+                    OperationQueue.main.addOperation {
+                        completion(searchedUsers)
+                    }
+                    
+                }
+            } catch {
+                print(error)
+            }
+            
+        }).resume()
+    }
+    
+    func searchRepoWith(searchTerm: String, completion: @escaping RepoSearchCompletion) {
+        
+        //need an array to store the filtered results
+        var filteredRepos = [Repository]()
+        
+        
+        for repo in GitHubService.shared.allRepos {
+            if repo.name == searchTerm {
+                filteredRepos.append(repo)
+            }
+        }
+        
+        
+        OperationQueue.main.addOperation {
+            completion(filteredRepos)
+        }
+ 
+    }
+    
+    //NETWORK CALL:
     func fetchRepos(completion: @escaping RepositoriesCompletion) {
         self.urlComponents.path = "/user/repos"
         guard let url = self.urlComponents.url else {

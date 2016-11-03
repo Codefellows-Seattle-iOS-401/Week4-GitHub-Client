@@ -11,9 +11,13 @@ import UIKit
 class HomeViewController: UIViewController {
     
     let customTransition = CustomTransition()
+    
     var filteredRepos = [Repository]()
     
     @IBOutlet weak var repoTableView: UITableView!
+    
+    @IBOutlet weak var repoSearchBar: UISearchBar!
+    
     
     
 
@@ -21,9 +25,12 @@ class HomeViewController: UIViewController {
         super.viewDidLoad()
 
         update()
+        
+        //ANY TIME WE USE A NIB WE HAVE TO REGISTER 
         let nib = UINib(nibName: "repoCell", bundle: nil)
         self.repoTableView.register(nib, forCellReuseIdentifier: RepoViewCell.identifier)
         
+        //THIS DOES SOMETHING SPECIAL THAT I NEED TO REMEMBER BUT I DONT REMEMBER WHAT
         self.repoTableView.estimatedRowHeight = 50
         self.repoTableView.rowHeight = UITableViewAutomaticDimension
     }
@@ -38,6 +45,7 @@ class HomeViewController: UIViewController {
         GitHubService.shared.fetchRepos { (repositories) in
             if let repositories = repositories {
                 GitHubService.shared.allRepos = repositories
+                self.filteredRepos = GitHubService.shared.allRepos
                 self.repoTableView.reloadData()
             }
             
@@ -69,20 +77,34 @@ extension HomeViewController: UIViewControllerTransitioningDelegate {
 
 extension HomeViewController: UISearchBarDelegate {
     
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        if let searchText = searchBar.text {
+            filteredRepos = [Repository]()
+            for repo in GitHubService.shared.allRepos {
+                if repo.name == searchText {
+                    filteredRepos.append(repo)
+                }
+            }
+            self.repoTableView.reloadData()
+        }
+    }
     
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        self.repoTableView.reloadData()
+        update()
+    }
 }
 
 extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
-    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: RepoViewCell.identifier, for: indexPath) as! RepoViewCell
-        let repoName = GitHubService.shared.allRepos[indexPath.row]
+        let repoName = filteredRepos[indexPath.row]
         cell.repo = repoName
         return cell
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return GitHubService.shared.allRepos.count
+        return filteredRepos.count
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		50474C011DCBA2500096FD5C /* UserSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50474C001DCBA2500096FD5C /* UserSearchViewController.swift */; };
+		50474C031DCBA5050096FD5C /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50474C021DCBA5050096FD5C /* User.swift */; };
+		50474C051DCBB7980096FD5C /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50474C041DCBB7980096FD5C /* WebViewController.swift */; };
 		505692221DC7AA6C005741C1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 505692211DC7AA6C005741C1 /* AppDelegate.swift */; };
 		505692271DC7AA6C005741C1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 505692251DC7AA6C005741C1 /* Main.storyboard */; };
 		505692291DC7AA6C005741C1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 505692281DC7AA6C005741C1 /* Assets.xcassets */; };
@@ -24,6 +27,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		50474C001DCBA2500096FD5C /* UserSearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserSearchViewController.swift; sourceTree = "<group>"; };
+		50474C021DCBA5050096FD5C /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		50474C041DCBB7980096FD5C /* WebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		5056921E1DC7AA6C005741C1 /* GoGoGithub.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GoGoGithub.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		505692211DC7AA6C005741C1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		505692261DC7AA6C005741C1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -75,10 +81,13 @@
 				5072B8A01DCA6DEB00705213 /* CustomTransition.swift */,
 				505692211DC7AA6C005741C1 /* AppDelegate.swift */,
 				505692251DC7AA6C005741C1 /* Main.storyboard */,
+				50474C021DCBA5050096FD5C /* User.swift */,
 				5072B8A21DCA86BC00705213 /* repoCell.xib */,
 				5072B89E1DCA6A9D00705213 /* RepoDetailViewController.swift */,
 				5072B89A1DC8FB3400705213 /* AuthViewController.swift */,
 				5072B8981DC8F9EE00705213 /* HomeViewController.swift */,
+				50474C001DCBA2500096FD5C /* UserSearchViewController.swift */,
+				50474C041DCBB7980096FD5C /* WebViewController.swift */,
 				5072B8A41DCA8B5500705213 /* RepoViewCell.swift */,
 				505692281DC7AA6C005741C1 /* Assets.xcassets */,
 				5056922A1DC7AA6C005741C1 /* LaunchScreen.storyboard */,
@@ -169,11 +178,14 @@
 				5072B89F1DCA6A9D00705213 /* RepoDetailViewController.swift in Sources */,
 				505692381DC7E28C005741C1 /* Extensions.swift in Sources */,
 				505692341DC7C22D005741C1 /* GitHubService.swift in Sources */,
+				50474C011DCBA2500096FD5C /* UserSearchViewController.swift in Sources */,
 				5072B8A51DCA8B5500705213 /* RepoViewCell.swift in Sources */,
 				5072B8A11DCA6DEB00705213 /* CustomTransition.swift in Sources */,
 				5072B89B1DC8FB3400705213 /* AuthViewController.swift in Sources */,
+				50474C031DCBA5050096FD5C /* User.swift in Sources */,
 				505692221DC7AA6C005741C1 /* AppDelegate.swift in Sources */,
 				505692361DC7C455005741C1 /* GitHubCredentials.swift in Sources */,
+				50474C051DCBB7980096FD5C /* WebViewController.swift in Sources */,
 				5072B8991DC8F9EE00705213 /* HomeViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
