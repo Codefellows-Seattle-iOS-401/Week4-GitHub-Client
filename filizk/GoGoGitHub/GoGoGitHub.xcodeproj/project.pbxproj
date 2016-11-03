@@ -17,6 +17,10 @@
 		BDE3938F1DC8FBA80066FC6B /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE3938E1DC8FBA80066FC6B /* AuthViewController.swift */; };
 		BDE393911DC907810066FC6B /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE393901DC907810066FC6B /* HomeViewController.swift */; };
 		BDE393931DC91ABC0066FC6B /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE393921DC91ABC0066FC6B /* Repository.swift */; };
+		BDE393951DCA6AB40066FC6B /* RepoDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE393941DCA6AB40066FC6B /* RepoDetailViewController.swift */; };
+		BDE393971DCA6DB90066FC6B /* CustomTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE393961DCA6DB90066FC6B /* CustomTransition.swift */; };
+		BDE393991DCA96D70066FC6B /* RepoDetailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BDE393981DCA96D70066FC6B /* RepoDetailCell.xib */; };
+		BDE3939B1DCA98330066FC6B /* RepoDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE3939A1DCA98330066FC6B /* RepoDetailCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +36,10 @@
 		BDE3938E1DC8FBA80066FC6B /* AuthViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AuthViewController.swift; path = ../AuthViewController.swift; sourceTree = "<group>"; };
 		BDE393901DC907810066FC6B /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HomeViewController.swift; path = ../HomeViewController.swift; sourceTree = "<group>"; };
 		BDE393921DC91ABC0066FC6B /* Repository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
+		BDE393941DCA6AB40066FC6B /* RepoDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RepoDetailViewController.swift; sourceTree = "<group>"; };
+		BDE393961DCA6DB90066FC6B /* CustomTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTransition.swift; sourceTree = "<group>"; };
+		BDE393981DCA96D70066FC6B /* RepoDetailCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RepoDetailCell.xib; sourceTree = "<group>"; };
+		BDE3939A1DCA98330066FC6B /* RepoDetailCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RepoDetailCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,11 +74,15 @@
 			children = (
 				BDE3938E1DC8FBA80066FC6B /* AuthViewController.swift */,
 				BDE393901DC907810066FC6B /* HomeViewController.swift */,
+				BDE393961DCA6DB90066FC6B /* CustomTransition.swift */,
+				BDE393941DCA6AB40066FC6B /* RepoDetailViewController.swift */,
 				BDE393721DC7AA6E0066FC6B /* AppDelegate.swift */,
 				BDE393841DC7C22C0066FC6B /* GitHubService.swift */,
 				BDE393921DC91ABC0066FC6B /* Repository.swift */,
 				BDE393881DC7E2930066FC6B /* Extensions.swift */,
 				BDE393861DC7C46B0066FC6B /* GitHubCredentials.swift */,
+				BDE3939A1DCA98330066FC6B /* RepoDetailCell.swift */,
+				BDE393981DCA96D70066FC6B /* RepoDetailCell.xib */,
 				BDE393761DC7AA6E0066FC6B /* Main.storyboard */,
 				BDE393791DC7AA6E0066FC6B /* Assets.xcassets */,
 				BDE3937B1DC7AA6E0066FC6B /* LaunchScreen.storyboard */,
@@ -139,6 +151,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BDE393991DCA96D70066FC6B /* RepoDetailCell.xib in Resources */,
 				BDE3937D1DC7AA6E0066FC6B /* LaunchScreen.storyboard in Resources */,
 				BDE3937A1DC7AA6E0066FC6B /* Assets.xcassets in Resources */,
 				BDE393781DC7AA6E0066FC6B /* Main.storyboard in Resources */,
@@ -153,11 +166,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				BDE393931DC91ABC0066FC6B /* Repository.swift in Sources */,
+				BDE393951DCA6AB40066FC6B /* RepoDetailViewController.swift in Sources */,
 				BDE393891DC7E2930066FC6B /* Extensions.swift in Sources */,
 				BDE393851DC7C22C0066FC6B /* GitHubService.swift in Sources */,
+				BDE393971DCA6DB90066FC6B /* CustomTransition.swift in Sources */,
 				BDE393731DC7AA6E0066FC6B /* AppDelegate.swift in Sources */,
 				BDE3938F1DC8FBA80066FC6B /* AuthViewController.swift in Sources */,
 				BDE393871DC7C46B0066FC6B /* GitHubCredentials.swift in Sources */,
+				BDE3939B1DCA98330066FC6B /* RepoDetailCell.swift in Sources */,
 				BDE393911DC907810066FC6B /* HomeViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
